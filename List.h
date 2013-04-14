@@ -44,20 +44,20 @@ class list{
             }
         }
         
-        void copy(list& lst){
+        void swap(list& lst){
             std::swap(__left__, lst.__left__);
             std::swap(__right__, lst.__right__);
             std::swap(__size__, lst.__size__);
         }
         
         list& operator= (list l){
-            copy(l);
+            swap(l);
             return this;
         }
         
         void clear(){
             list empty;
-            copy(empty);
+            swap(empty);
         }
         
         void push_back(const T& val){
@@ -113,10 +113,119 @@ class list{
                     assert(_node->right);
                     iterator tmp(*this);
                     _node = _node->right;
-                    return *tmp;
+                    return tmp;
                 }
 
+                iterator& operator-- () {
+                    assert(_node->left);
+                    _node = _node->left;
+                    return *this;
+                }
+                
+                iterator operator-- () {
+                    assert(_node->left);
+                    iterator tmp(*this);
+                    _node = _node->left;
+                    return tmp;
+                }
+                
+                
         };
+        
+        class const_iterator : public std::iterator<std::bidirectional_iterator_tag, const node> {
+            public:
+                const node* _node;
+
+                const_iterator(const node* _node) : _node(_node) {}
+                const_iterator(const const_iterator& it) : _node(it._node) {}
+
+                bool operator==(const const_iterator& it) const {
+                    return _node == it._node;
+                }
+
+                bool operator!=(const const_iterator& it) const {
+                    return _node != it._node;
+                }
+        
+                T const& operator*() const {
+                    return _node->value;
+                }
+
+                const_iterator& operator++() {
+                    assert(_node->right);
+                    _node = _node->right;
+                    return *this;
+                }
+
+                const_iterator operator++(int) {
+                    assert(_node->right);
+                    const_iterator tmp(*this); 
+                    _node = _node->right;
+                    return tmp;
+                }
+
+                const_iterator& operator--() {
+                    assert(_node->left);
+                    _node = _node->left;
+                    return *this;
+                }
+
+                const_iterator operator--(int) {
+                    assert(_node->left);
+                    const_iterator tmp(*this); 
+                    _node = _node->left;
+                    return tmp;
+                }
+        };
+        
+        const_iterator begin() const {
+            return const_iterator(__left__);
+        }
+        
+        iterator begin() {
+            return iterator(__left__);
+        }
+        
+        const_iterator end() const {
+            return const_iterator(__right__);
+        }
+        
+        iterator end() {
+            return iterator(__right__);
+        }
+        
+        size_t size() const{
+            return __size__;
+        }
+        
+        iterator insert(const iterator& it, const T& val) {
+            node* new_node = new node(val, it._node->left, it._node);
+            if(it._node->left){
+                it._node->left->right = new_node;
+            }
+            it._node->left = new_node;
+            if(it._node == __left__) {
+                __left__ == new_node;
+            }
+            ++__size__;
+            return iterator(new_node);
+        }
+        
+        void erase(const iterator& it) {
+            assert(it._node != __right__);
+            node* nd = it._node;
+            if (it._node->left) {
+                it._node->left->right = it._node->right;
+            }
+            if (it._node->left) {
+                it._node->right->left = it._node->left;
+            }
+            if (it._node == __left__){
+                __left__ = it._node->right;
+            }
+            --__size__;
+            delete nd;
+        }
 }
 
 #endif
