@@ -5,7 +5,6 @@
 #include<cstdlib>
 #include<cassert>
 
-//using std::swap;
 template <class T>
 class list{
     private:
@@ -17,11 +16,6 @@ class list{
             
                 node(const T &val, node* left, node* right):
                     val(val), left(left), right(right) {
-                }
-                
-                node():
-                    val(0), left(0), right(0) {
-                    
                 }
         };
     
@@ -37,7 +31,7 @@ class list{
         
         list(const list& lst){
             __left__ = __right__ = new node(T(), 0, 0);
-            for(list::const_iterator i = lst.begin(); i!=lst.end(); ++i){
+            for(const_iterator i = lst.begin(); i!=lst.end(); ++i){
                 push_back(*i);
             }
         }
@@ -87,7 +81,7 @@ class list{
             erase(begin());
         }
         
-        T const& front(){
+        T const& front() const{
             return *(begin());
         }
         
@@ -206,13 +200,14 @@ class list{
         }
         
         iterator insert(const iterator& it, const T& val) {
-            node* new_node = new node(val, it._node->left, it._node);
-            if(it._node->left){
-                it._node->left->right = new_node;
+            node* nd = it._node;
+            node* new_node = new node(val, nd->left, nd);
+            if(nd->left){
+                nd->left->right = new_node;
             }
-            it._node->left = new_node;
-            if(it._node == __left__) {
-                __left__ == new_node;
+            nd->left = new_node;
+            if(nd == __left__) {
+                __left__ = new_node;
             }
             ++__size__;
             return iterator(new_node);
@@ -221,14 +216,14 @@ class list{
         void erase(const iterator& it) {
             //assert(!(it._node == __right__));
             node* nd = it._node;
-            if (it._node->left) {
-                it._node->left->right = it._node->right;
+            if (nd->left) {
+                nd->left->right = nd->right;
             }
-            if (it._node->left) {
-                it._node->right->left = it._node->left;
+            if (nd->left) {
+                nd->right->left = nd->left;
             }
-            if (it._node == __left__){
-                __left__ = it._node->right;
+            if (nd == __left__){
+                __left__ = nd->right;
             }
             --__size__;
             delete nd;
