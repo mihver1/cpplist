@@ -1,4 +1,4 @@
 cpplist
 =======
 
-C++ Double linked list implementation
+C++ double linked list implementation

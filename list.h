@@ -2,9 +2,10 @@
 #define _LIST_H_
 
 #include<algorithm>
+#include<cstdlib>
+#include<cassert>
 
 //using std::swap;
-
 template <class T>
 class list{
     private:
@@ -30,9 +31,7 @@ class list{
         
         list(const& list lst){
             __left__ = __right__ = new node(T(), 0, 0);
-            for(iterator it = l.begin(); it!=l.end(); ++it) {
-                push_back(*it);
-            }
+            swap(lst);
         }
         
         ~list(){
@@ -148,7 +147,7 @@ class list{
                 }
         
                 T const& operator*() const {
-                    return _node->value;
+                    return _node->val;
                 }
 
                 const_iterator& operator++() {
@@ -212,7 +211,7 @@ class list{
         }
         
         void erase(const iterator& it) {
-            assert(it._node != __right__);
+            assert(!(it._node == __right__));
             node* nd = it._node;
             if (it._node->left) {
                 it._node->left->right = it._node->right;
@@ -226,6 +225,6 @@ class list{
             --__size__;
             delete nd;
         }
-}
+};
 
 #endif
