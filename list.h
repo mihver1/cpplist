@@ -15,12 +15,18 @@ class list{
                 node* right;
                 T val;
             
-            node(const T &value, node* left, node* right):
-                value(value), left(left), right(right) {
-            }
+                node(const T &val, node* left, node* right):
+                    val(val), left(left), right(right) {
+                }
+                
+                node():
+                    val(0), left(0), right(0) {
+                    
+                }
         };
     
-        node* __left__, __right__;
+        node* __left__;
+        node* __right__;
         size_t __size__;
     public:
         
@@ -29,9 +35,11 @@ class list{
             __size__ = 0;
         }
         
-        list(const& list lst){
+        list(const list& lst){
             __left__ = __right__ = new node(T(), 0, 0);
-            swap(lst);
+            for(list::const_iterator i = lst.begin(); i!=lst.end(); ++i){
+                push_back(*i);
+            }
         }
         
         ~list(){
@@ -51,7 +59,7 @@ class list{
         
         list& operator= (list l){
             swap(l);
-            return this;
+            return *this;
         }
         
         void clear(){
@@ -68,7 +76,7 @@ class list{
         }
         
         T const& back() const{
-            return *(--back());
+            return *(--end());
         }
         
         void push_front(const T& val){
@@ -87,8 +95,8 @@ class list{
             public:
                 node* _node;
                 
-                iterator(node* _node): node(_node){}
-                iterator(const iterator& it): _node(it.node){}
+                iterator(node* _node): _node(_node){}
+                iterator(const iterator& it): _node(it._node){}
                 
                 bool operator==(const iterator &it) const {
                     return _node == it._node;
@@ -103,26 +111,26 @@ class list{
                 }
                 
                 iterator& operator++ () {
-                    assert(_node->right);
+                    //assert(_node->right);
                     _node = _node->right;
                     return *this;
                 }
                 
                 iterator operator++ (int) {
-                    assert(_node->right);
+                    //assert(_node->right);
                     iterator tmp(*this);
                     _node = _node->right;
                     return tmp;
                 }
 
                 iterator& operator-- () {
-                    assert(_node->left);
+                    //assert(_node->left);
                     _node = _node->left;
                     return *this;
                 }
                 
-                iterator operator-- () {
-                    assert(_node->left);
+                iterator operator-- (int) {
+                    //assert(_node->left);
                     iterator tmp(*this);
                     _node = _node->left;
                     return tmp;
@@ -151,26 +159,26 @@ class list{
                 }
 
                 const_iterator& operator++() {
-                    assert(_node->right);
+                    //assert(_node->right);
                     _node = _node->right;
                     return *this;
                 }
 
                 const_iterator operator++(int) {
-                    assert(_node->right);
+                    //assert(_node->right);
                     const_iterator tmp(*this); 
                     _node = _node->right;
                     return tmp;
                 }
 
                 const_iterator& operator--() {
-                    assert(_node->left);
+                    //assert(_node->left);
                     _node = _node->left;
                     return *this;
                 }
 
                 const_iterator operator--(int) {
-                    assert(_node->left);
+                    //assert(_node->left);
                     const_iterator tmp(*this); 
                     _node = _node->left;
                     return tmp;
@@ -211,7 +219,7 @@ class list{
         }
         
         void erase(const iterator& it) {
-            assert(!(it._node == __right__));
+            //assert(!(it._node == __right__));
             node* nd = it._node;
             if (it._node->left) {
                 it._node->left->right = it._node->right;
