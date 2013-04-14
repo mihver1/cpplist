@@ -45,46 +45,6 @@ class list{
             }
         }
         
-        void swap(list& lst){
-            std::swap(__left__, lst.__left__);
-            std::swap(__right__, lst.__right__);
-            std::swap(__size__, lst.__size__);
-        }
-        
-        list& operator= (list l){
-            swap(l);
-            return *this;
-        }
-        
-        void clear(){
-            list empty;
-            swap(empty);
-        }
-        
-        void push_back(const T& val){
-            insert(end(), val);
-        }
-        
-        void pop_back(){
-            erase(--end());
-        }
-        
-        T const& back() const{
-            return *(--end());
-        }
-        
-        void push_front(const T& val){
-            insert(begin(), val);
-        }
-        
-        void pop_front(){
-            erase(begin());
-        }
-        
-        T const& front() const{
-            return *(begin());
-        }
-        
         class iterator : public std::iterator<std::bidirectional_iterator_tag, node>{
             public:
                 node* _node;
@@ -178,6 +138,46 @@ class list{
                     return tmp;
                 }
         };
+        
+        void swap(list& lst){
+            std::swap(__left__, lst.__left__);
+            std::swap(__right__, lst.__right__);
+            std::swap(__size__, lst.__size__);
+        }
+        
+        list& operator= (list l){
+            swap(l);
+            return *this;
+        }
+        
+        void clear(){
+            list empty;
+            swap(empty);
+        }
+        
+        void push_back(const T& val){
+            insert(end(), val);
+        }
+        
+        void pop_back(){
+            erase(--end());
+        }
+        
+        T const& back() const{
+            return *(--end());
+        }
+        
+        void push_front(const T& val){
+            insert(begin(), val);
+        }
+        
+        void pop_front(){
+            erase(begin());
+        }
+        
+        T const& front() const{
+            return *(begin());
+        }
         
         const_iterator begin() const {
             return const_iterator(__left__);
