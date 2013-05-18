@@ -219,7 +219,7 @@ class list{
             if (nd->left) {
                 nd->left->right = nd->right;
             }
-            if (nd->left) {
+            if (nd->right) {
                 nd->right->left = nd->left;
             }
             if (nd == __left__){
